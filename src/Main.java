@@ -1,54 +1,65 @@
 import java.util.Scanner;
 
+
 class Main {
-    public static String calc(String input) {
-        String[] tokens = input.split(" ");
-
-        if (tokens.length != 3) {
-            return "Некорректный ввод";
-        }
-
-        int num1, num2;
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите 2 числа и арифметическое действие");
+        String input = scanner.nextLine();
         try {
-            num1 = Integer.parseInt(tokens[0]);
-            num2 = Integer.parseInt(tokens[2]);
-        } catch (NumberFormatException e) {
-            return "Некорректный ввод";
+            String result = calc(input);
+            System.out.println(result);
+        } catch (Exception e) {
+            System.out.println("throws Exception");
         }
+    }
 
-        if (num1 < 1 || num1> 10 || num2 < 1 || num2 > 10) {
-            return "Некорректный ввод";
+    public static String calc(String input) throws Exception {
+        String[] tokens = input.split(" ");
+        if (tokens.length != 3) {
+            throw new Exception();
         }
-
+        int a, b;
+        try {
+            a = parseNumber(tokens[0]);
+            b = parseNumber(tokens[2]);
+        } catch (Exception e) {
+            throw new Exception();
+        }
+        String operator = tokens[1];
         int result;
-        switch (tokens[1]) {
+        switch (operator) {
             case "+":
-                result = num1 + num2;
+                result = a + b;
                 break;
             case "-":
-                result = num1 - num2;
+                result = a - b;
                 break;
             case "*":
-                result = num1 * num2;
+                result = a * b;
                 break;
             case "/":
-                if (num2 == 0) {
-                    return "Некорректный ввод";
+                if (b == 0) {
+                    throw new Exception();
                 }
-                result = num1 / num2;
+                result = a / b;
                 break;
             default:
-                return "Некорректный ввод";
+                throw new Exception();
         }
-
         return String.valueOf(result);
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите выражение:");
-        String input = scanner.nextLine();
-        System.out.println(calc(input));
-        scanner.close();
+    public static int parseNumber(String token) throws Exception {
+        int number;
+        try {
+            number = Integer.parseInt(token);
+        } catch (NumberFormatException e) {
+            throw new Exception();
+        }
+        if (number < 1 || number > 10) {
+            throw new Exception();
+        }
+        return number;
     }
 }
